@@ -1,6 +1,8 @@
 const QUESTION_COUNT = 3;
 // 級ごとの難しさ（星の数、5段階）
 const STARS = { "3": 1, "2": 3, "1": 5 };
+// 画面に出すクラス名（Excel の級との対応）
+const CLASS_NAMES = { "3": "ストリート級", "2": "サーキット級", "1": "ラリー級" };
 const starHtml = lv => `<span class="stars" aria-label="難しさ 星${STARS[lv]}つ">${"★".repeat(STARS[lv])}<span class="off">${"★".repeat(5 - STARS[lv])}</span></span>`;
 // 結果画面に出す景品交換の案内（場所などが決まったらここを書き換える）
 const PRIZE_TITLE = "景品と交換できます";
@@ -91,17 +93,17 @@ function showResult() {
         <p class="prize-time">${new Date().toLocaleString("ja-JP", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" })} 挑戦</p>
       </div>
       <button class="primary" id="retry">もう一度挑戦する</button>
-      <a class="change-level" href="./">別の級に挑戦する</a>
+      <a class="change-level" href="./">別のクラスに挑戦する</a>
     </div>`;
   document.getElementById("retry").addEventListener("click", start);
 }
 
 function showLevelSelect() {
-  document.getElementById("level-label").textContent = "SELECT LEVEL";
+  document.getElementById("level-label").textContent = "SELECT CLASS";
   screen.innerHTML = `
-    <p class="select-lead">挑戦する級を選んでください</p>
+    <p class="select-lead">挑戦するクラスを選んでください</p>
     <div class="levels">
-      ${["3", "2", "1"].map((lv, i) => `<a class="level-btn" style="--i:${i}" href="?level=${lv}"><span class="lv">${lv}級</span>${starHtml(lv)}</a>`).join("")}
+      ${["3", "2", "1"].map((lv, i) => `<a class="level-btn" style="--i:${i}" href="?level=${lv}"><span class="lv">${CLASS_NAMES[lv]}</span>${starHtml(lv)}</a>`).join("")}
     </div>`;
 }
 
@@ -111,15 +113,15 @@ title.innerHTML = kinetic(title.textContent);
 fetch("questions.json", { cache: "no-cache" })
   .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
   .then(all => {
-    // 級の指定がないときは、級を選ぶ画面を出す（級をまたいで出題しない）
+    // 級の指定がないときは、クラスを選ぶ画面を出す（級をまたいで出題しない）
     if (!["1", "2", "3"].includes(level)) {
       showLevelSelect();
       return;
     }
     pool = all.filter(q => q.level === level);
-    document.getElementById("level-label").innerHTML = `${level}級 ${starHtml(level)}`;
+    document.getElementById("level-label").innerHTML = `${CLASS_NAMES[level]} ${starHtml(level)}`;
     if (pool.length === 0) {
-      screen.innerHTML = `<div class="card">この級の問題がありません。</div>`;
+      screen.innerHTML = `<div class="card">このクラスの問題がありません。</div>`;
       return;
     }
     start();
