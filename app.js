@@ -1,9 +1,12 @@
 const QUESTION_COUNT = 3;
-// 級ごとの難しさ（星の数、5段階）
-const STARS = { "3": 1, "2": 3, "1": 5 };
+// 級ごとの難しさ（キラキラ星の数、最大6つ）
+const STARS = { "3": 1, "2": 3, "1": 6 };
+const MAX_STARS = 6;
+// 4方向にとがった金色の星（背景が暗いので画像ではなく SVG で描く）
+const STAR_SVG = `<svg class="star" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 2 C54 34 66 46 98 50 C66 54 54 66 50 98 C46 66 34 54 2 50 C34 46 46 34 50 2 Z"/></svg>`;
+const starHtml = lv => `<span class="stars" role="img" aria-label="難しさ 星${STARS[lv]}つ">${STAR_SVG.repeat(STARS[lv])}<span class="off">${STAR_SVG.repeat(MAX_STARS - STARS[lv])}</span></span>`;
 // 画面に出すクラス名（Excel の級との対応）
 const CLASS_NAMES = { "3": "ストリート級", "2": "スポーツ級", "1": "WRC級" };
-const starHtml = lv => `<span class="stars" aria-label="難しさ 星${STARS[lv]}つ">${"★".repeat(STARS[lv])}<span class="off">${"★".repeat(5 - STARS[lv])}</span></span>`;
 // 結果画面に出す景品交換の案内（場所などが決まったらここを書き換える）
 const PRIZE_TITLE = "景品と交換できます";
 const PRIZE_TEXT = "この画面をスタッフにお見せください。";

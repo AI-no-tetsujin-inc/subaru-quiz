@@ -81,9 +81,12 @@ button:disabled { cursor:default; }
 .select-lead { text-align:center; margin:0 0 8px; color:var(--muted); }
 
 /* 難しさの星 */
-.stars { color:#ffd54a; letter-spacing:.08em; }
-.stars .off { color:rgba(255,255,255,.18); }
+.stars { display:inline-flex; align-items:center; gap:2px; vertical-align:middle; }
+.stars .off { display:inline-flex; gap:2px; }
+.star { width:1em; height:1em; fill:url(#gold); filter:drop-shadow(0 0 3px rgba(255,200,40,.6)); }
+.stars .off .star { fill:rgba(255,255,255,.15); filter:none; }
 .level-btn { align-items:center; justify-content:space-between; }
-.level-btn .stars { font-size:1.3rem; }
+.level-btn .stars { font-size:1.15rem; }
+.level-btn .lv { white-space:nowrap; font-size:1.4rem; }
 .badge .stars { font-size:.85rem; }
 .change-level { display:block; margin-top:14px; text-align:center; color:var(--sky); }
