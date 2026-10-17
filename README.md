@@ -1,6 +1,6 @@
 # スバル検定クイズ
 
-QR コードを読み取ると、指定した級からランダムに3問出題されます。
+QR コードを読み取ると級を選ぶ画面が開き、選んだ級からランダムに3問出題されます。難しさは星で表示します（3級 ★1、2級 ★3、1級 ★5）。
 
 - `index.html?level=3` で3級から出題します。`2`・`1` も同じです。`level` を指定しないと、級を選ぶ画面が出ます。
 
@@ -17,7 +17,7 @@ python3 scripts/build_questions.py <問題案のExcel>
 ```
 python3 scripts/make_qr.py https://<ユーザー名>.github.io/subaru-quiz/
 ```
-`qr/level3.png` などができます。
+`qr/quiz.png` ができます。
 
 ## 手元で確認する
 ```
