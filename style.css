@@ -19,7 +19,7 @@ h1 { font-size:clamp(2.4rem,12vw,3.6rem); font-weight:900; margin:6px 0 0; line-
 /* 1文字ずつ動かす */
 .kinetic .ch { display:inline-block; opacity:0; animation:rise .55s cubic-bezier(.2,1.4,.4,1) forwards; animation-delay:calc(var(--i) * 35ms); }
 h1.kinetic .ch { animation-name:drop; animation-duration:.7s; animation-delay:calc(var(--i) * 80ms); }
-@keyframes rise { from { opacity:0; transform:translateY(.8em) rotate(8deg); filter:blur(4px); } to { opacity:1; transform:none; filter:none; } }
+@keyframes rise { from { opacity:0; transform:translateY(.8em) rotate(8deg); } to { opacity:1; transform:none; } }
 @keyframes drop { 0% { opacity:0; transform:translateY(-1.2em) scale(1.6); } 60% { opacity:1; transform:translateY(.08em) scale(.95); } 100% { opacity:1; transform:none; } }
 @keyframes pop { from { opacity:0; transform:scale(.6); } to { opacity:1; transform:none; } }
 
@@ -70,3 +70,12 @@ button:disabled { cursor:default; }
 .prize-title .ch { animation-delay:calc(.8s + var(--i) * 50ms); }
 .prize-text { margin:6px 0 0; }
 .prize-time { margin:8px 0 0; font-size:.8rem; color:var(--muted); }
+
+/* 級を選ぶ画面 */
+.levels { display:grid; gap:12px; margin-top:8px; }
+.level-btn { display:flex; align-items:baseline; gap:12px; padding:18px 20px; text-decoration:none; color:var(--text);
+  border:2px solid rgba(255,255,255,.18); border-radius:14px; background:rgba(255,255,255,.04);
+  opacity:0; animation:slide .45s ease-out forwards; animation-delay:calc(.4s + var(--i) * 90ms); }
+.level-btn .lv { font-family:Oswald,sans-serif; font-size:2.4rem; font-weight:700; color:var(--sky); line-height:1; }
+.level-btn .desc { font-weight:900; }
+.select-lead { text-align:center; margin:0 0 8px; color:var(--muted); }

@@ -92,14 +92,28 @@ function showResult() {
   document.getElementById("retry").addEventListener("click", start);
 }
 
+function showLevelSelect() {
+  document.getElementById("level-label").textContent = "SELECT LEVEL";
+  screen.innerHTML = `
+    <p class="select-lead">挑戦する級を選んでください</p>
+    <div class="levels">
+      ${["3", "2", "1"].map((lv, i) => `<a class="level-btn" style="--i:${i}" href="?level=${lv}"><span class="lv">${lv}級</span></a>`).join("")}
+    </div>`;
+}
+
 const title = document.getElementById("title");
 title.innerHTML = kinetic(title.textContent);
 
 fetch("questions.json", { cache: "no-cache" })
   .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
   .then(all => {
-    pool = level ? all.filter(q => q.level === level) : all;
-    if (level) document.getElementById("level-label").textContent = `LEVEL ${level}`;
+    // 級の指定がないときは、級を選ぶ画面を出す（級をまたいで出題しない）
+    if (!["1", "2", "3"].includes(level)) {
+      showLevelSelect();
+      return;
+    }
+    pool = all.filter(q => q.level === level);
+    document.getElementById("level-label").textContent = `LEVEL ${level}`;
     if (pool.length === 0) {
       screen.innerHTML = `<div class="card">この級の問題がありません。</div>`;
       return;
