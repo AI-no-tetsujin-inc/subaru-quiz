@@ -1,4 +1,7 @@
 const QUESTION_COUNT = 3;
+// 結果画面に出す景品交換の案内（場所などが決まったらここを書き換える）
+const PRIZE_TITLE = "景品と交換できます";
+const PRIZE_TEXT = "この画面をスタッフにお見せください。";
 const screen = document.getElementById("screen");
 const level = new URLSearchParams(location.search).get("level");
 
@@ -78,6 +81,12 @@ function showResult() {
       <p class="score-label">SCORE</p>
       <p class="score"><span class="big">${score}</span><span class="total"> / ${quiz.length}</span></p>
       <p class="message kinetic">${kinetic(messages[Math.round(score / quiz.length * 3)])}</p>
+      <div class="prize">
+        <p class="prize-label">PRESENT</p>
+        <p class="prize-title kinetic">${kinetic(PRIZE_TITLE)}</p>
+        <p class="prize-text">${escapeHtml(PRIZE_TEXT)}</p>
+        <p class="prize-time">${new Date().toLocaleString("ja-JP", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" })} 挑戦</p>
+      </div>
       <button class="primary" id="retry">もう一度挑戦する</button>
     </div>`;
   document.getElementById("retry").addEventListener("click", start);

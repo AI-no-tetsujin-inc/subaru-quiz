@@ -61,3 +61,12 @@ button:disabled { cursor:default; }
   *, *::before, *::after { animation:none !important; transition:none !important; }
   .kinetic .ch, .choice { opacity:1; }
 }
+
+/* 景品交換の案内 */
+.prize { margin-top:24px; padding:18px 16px; border:2px dashed var(--sky); border-radius:14px; text-align:center;
+  background:rgba(79,195,255,.08); animation:pop .5s .6s both; }
+.prize-label { margin:0; font-family:Oswald,sans-serif; letter-spacing:.3em; color:var(--sky); font-size:.8rem; }
+.prize-title { margin:4px 0 0; font-size:1.5rem; font-weight:900; }
+.prize-title .ch { animation-delay:calc(.8s + var(--i) * 50ms); }
+.prize-text { margin:6px 0 0; }
+.prize-time { margin:8px 0 0; font-size:.8rem; color:var(--muted); }
