@@ -28,3 +28,6 @@ python3 scripts/make_qr.py https://<ユーザー名>.github.io/subaru-quiz/
 python3 -m http.server 8000
 ```
 ブラウザで http://localhost:8000/?level=3 を開く。
+
+## 更新がスマホに反映されないとき
+スマホは `app.js` と `style.css` を最大10分ほど覚えています。直したら `index.html` の `?v=` のあとの数字を新しくしてから push してください。
