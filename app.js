@@ -95,10 +95,8 @@ function showResult() {
         <p class="prize-text">${escapeHtml(PRIZE_TEXT)}</p>
         <p class="prize-time">${new Date().toLocaleString("ja-JP", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" })} 挑戦</p>
       </div>
-      <button class="primary" id="retry">もう一度挑戦する</button>
       <a class="change-level" href="./">別のクラスに挑戦する</a>
     </div>`;
-  document.getElementById("retry").addEventListener("click", start);
 }
 
 function showLevelSelect() {
