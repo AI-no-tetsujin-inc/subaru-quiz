@@ -1,0 +1,100 @@
+const QUESTION_COUNT = 3;
+const screen = document.getElementById("screen");
+const level = new URLSearchParams(location.search).get("level");
+
+let pool = [];
+let quiz = [];
+let current = 0;
+let score = 0;
+
+function shuffle(list) {
+  const a = [...list];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+// 1文字ずつ span に分けて、CSS でずらして動かす
+function kinetic(text) {
+  const chars = [...String(text)].map((c, i) =>
+    `<span class="ch" style="--i:${i};--r:${(i % 2 ? 1 : -1) * (10 + (i * 7) % 20)}">${c === " " ? "&nbsp;" : escapeHtml(c)}</span>`
+  ).join("");
+  return `<span role="text" aria-label="${escapeHtml(text)}"><span aria-hidden="true">${chars}</span></span>`;
+}
+
+function start() {
+  quiz = shuffle(pool).slice(0, QUESTION_COUNT);
+  current = 0;
+  score = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = quiz[current];
+  screen.innerHTML = `
+    <div class="card">
+      <p class="progress"><span class="num">${String(current + 1).padStart(2, "0")}</span><span class="of">/ ${String(quiz.length).padStart(2, "0")}</span></p>
+      <div class="category">${escapeHtml(q.level)}級・${escapeHtml(q.category)}</div>
+      <p class="question kinetic">${kinetic(q.question)}</p>
+      <div class="choices">
+        ${q.choices.map((c, i) => `<button class="choice" style="--i:${i}" data-i="${i}"><span class="key">${"ABCD"[i]}</span>${escapeHtml(c)}</button>`).join("")}
+      </div>
+      <div id="feedback"></div>
+    </div>`;
+  screen.querySelectorAll(".choice").forEach(b => b.addEventListener("click", () => answer(Number(b.dataset.i))));
+}
+
+function answer(picked) {
+  const q = quiz[current];
+  const ok = picked === q.answer;
+  if (ok) score++;
+  screen.querySelector(".choices").classList.add("answered");
+  screen.querySelectorAll(".choice").forEach((b, i) => {
+    b.disabled = true;
+    if (i === q.answer) b.classList.add("correct");
+    else if (i === picked) b.classList.add("wrong");
+  });
+  const last = current === quiz.length - 1;
+  document.getElementById("feedback").innerHTML = `
+    <p class="verdict ${ok ? "ok" : "ng"}">${kinetic(ok ? "正解！" : "残念…")}</p>
+    <p class="explanation">${escapeHtml(q.explanation)}</p>
+    <button class="primary" id="next">${last ? "結果を見る" : "次の問題へ"}</button>`;
+  document.getElementById("next").addEventListener("click", () => {
+    if (last) showResult();
+    else { current++; showQuestion(); }
+  });
+}
+
+function showResult() {
+  const messages = ["また挑戦してね", "あと一歩！", "なかなかのスバリスト", "完璧！真のスバリスト"];
+  screen.innerHTML = `
+    <div class="card">
+      <p class="score-label">SCORE</p>
+      <p class="score"><span class="big">${score}</span><span class="total"> / ${quiz.length}</span></p>
+      <p class="message kinetic">${kinetic(messages[Math.round(score / quiz.length * 3)])}</p>
+      <button class="primary" id="retry">もう一度挑戦する</button>
+    </div>`;
+  document.getElementById("retry").addEventListener("click", start);
+}
+
+const title = document.getElementById("title");
+title.innerHTML = kinetic(title.textContent);
+
+fetch("questions.json", { cache: "no-cache" })
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(all => {
+    pool = level ? all.filter(q => q.level === level) : all;
+    if (level) document.getElementById("level-label").textContent = `LEVEL ${level}`;
+    if (pool.length === 0) {
+      screen.innerHTML = `<div class="card">この級の問題がありません。</div>`;
+      return;
+    }
+    start();
+  })
+  .catch(() => { screen.innerHTML = `<div class="card">問題を読み込めませんでした。</div>`; });
