@@ -89,4 +89,3 @@ button:disabled { cursor:default; }
 .level-btn .stars { font-size:1.15rem; }
 .level-btn .lv { white-space:nowrap; font-size:1.4rem; }
 .badge .stars { font-size:.85rem; }
-.change-level { display:block; margin-top:14px; text-align:center; color:var(--sky); }
