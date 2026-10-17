@@ -2,7 +2,7 @@ const QUESTION_COUNT = 3;
 // 級ごとの難しさ（星の数、5段階）
 const STARS = { "3": 1, "2": 3, "1": 5 };
 // 画面に出すクラス名（Excel の級との対応）
-const CLASS_NAMES = { "3": "ストリート級", "2": "サーキット級", "1": "ラリー級" };
+const CLASS_NAMES = { "3": "ストリート級", "2": "スポーツ級", "1": "WRC級" };
 const starHtml = lv => `<span class="stars" aria-label="難しさ 星${STARS[lv]}つ">${"★".repeat(STARS[lv])}<span class="off">${"★".repeat(5 - STARS[lv])}</span></span>`;
 // 結果画面に出す景品交換の案内（場所などが決まったらここを書き換える）
 const PRIZE_TITLE = "景品と交換できます";
